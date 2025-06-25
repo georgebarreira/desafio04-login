@@ -6,7 +6,8 @@ import * as yup from "yup";
 
 import { Container, LoginContainer, Column, Spacing, Title } from "./styles";
 import { defaultValues, IFormLogin } from "./types";
-
+import { useState } from "react";
+import { useEffect } from "react";
 const schema = yup
   .object({
     email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
@@ -27,7 +28,12 @@ const Login = () => {
     defaultValues,
     reValidateMode: "onChange",
   });
-
+  // Atualiza o estado do botão quando isValid muda
+  const [buttonState, setButtonState] = useState(false);
+  useEffect(() => {
+    setButtonState(!isValid);
+  }, [isValid]);
+  const handleButtonClick = () => {};
   return (
     <Container>
       <LoginContainer>
@@ -49,7 +55,11 @@ const Login = () => {
             errorMessage={errors?.password?.message}
           />
           <Spacing />
-          <Button title="Entrar" />
+          <Button
+            title="Entrar"
+            onClick={handleButtonClick}
+            disabled={buttonState}
+          />
         </Column>
       </LoginContainer>
     </Container>
